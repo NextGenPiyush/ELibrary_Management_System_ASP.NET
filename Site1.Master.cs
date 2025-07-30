@@ -135,7 +135,10 @@ namespace ElibraryManagementSystem
 
         protected void LinkButton7_Click(object sender, EventArgs e)
         {
-            Response.Redirect("userprofile.aspx");
+            if (Session["role"] != null && Session["role"].ToString() == "user")
+            {
+                Response.Redirect("userprofile.aspx");
+            }
         }
     }
 }

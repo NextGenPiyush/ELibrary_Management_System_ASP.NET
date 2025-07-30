@@ -1,40 +1,34 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="adminbookissuing.aspx.cs" Inherits="ElibraryManagementSystem.adminbookissuing" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script type="text/javascript">
-    $(document).ready(function () {
-        $(".table").prepend($("<thead></thead>").append($(this).find("tr:first"))).DataTable();
-    });
+        $(document).ready(function () {
+            $(".table").prepend($("<thead></thead>").append($(this).find("tr:first"))).DataTable();
+        });
     </script>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
         <div class="row">
+            <!-- Left Side Book Issue Form -->
             <div class="col-md-5">
                 <div class="card">
                     <div class="card-body">
 
                         <div class="row">
                             <div class="col">
-                                <center>
-                                    <h3>Book Issuing</h3>
-                                </center>
-                            </div> 
-                        </div>
-
-                        <div class="row">
-                            <div class="col">
-                                <center>
-                                    <img width="100px" src="imgs/book.jpeg" />
-                                </center>
+                                <center><h3>Book Issuing</h3></center>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col">
-                                <hr />
+                                <center><img width="100px" src="imgs/book.jpeg" /></center>
                             </div>
-                        </div> 
+                        </div>
+
+                        <div class="row"><div class="col"><hr /></div></div>
 
                         <div class="row">
                             <div class="col-md-6">
@@ -42,7 +36,6 @@
                                 <div class="form-group">
                                     <asp:TextBox CssClass="form-control" ID="TextBox4" runat="server" placeholder="Member Id"></asp:TextBox>
                                 </div>
-                                
                             </div>
                             <div class="col-md-6">
                                 <label>Book Id</label>
@@ -61,7 +54,6 @@
                                 <div class="form-group">
                                     <asp:TextBox CssClass="form-control" ID="TextBox1" runat="server" placeholder="Member Name" ReadOnly="true"></asp:TextBox>
                                 </div>
-                                
                             </div>
                             <div class="col-md-6">
                                 <label>Book Name</label>
@@ -79,7 +71,6 @@
                                 <div class="form-group">
                                     <asp:TextBox CssClass="form-control" ID="TextBox5" runat="server" placeholder="Start Date" TextMode="Date"></asp:TextBox>
                                 </div>
-                                
                             </div>
                             <div class="col-md-6">
                                 <label>End Date</label>
@@ -91,42 +82,43 @@
                             </div>
                         </div>
 
-
                         <div class="row">
                             <div class="col-6">
-                                <asp:Button ID="Button2" class="btn btn-lg btn-block btn-primary" runat="server" Text="Isssue" OnClick="Button2_Click" />
+                                <asp:Button ID="Button2" class="btn btn-lg btn-block btn-primary" runat="server" Text="Issue" OnClick="Button2_Click" />
                             </div>
                             <div class="col-6">
                                 <asp:Button ID="Button4" class="btn btn-lg btn-block btn-success" runat="server" Text="Return" OnClick="Button4_Click" />
                             </div>
-                        </div> 
+                        </div>
 
                     </div>
-
                 </div>
-
-                <a href="homepage.aspx"><< Back to Home</a><br><br>
-
+                <a href="homepage.aspx"><< Back to Home</a><br /><br />
             </div>
 
+            <!-- Right Side Issued Book List -->
             <div class="col-md-7">
                 <div class="card">
                     <div class="card-body">
 
                         <div class="row">
                             <div class="col">
-                                <center>
-                                    <h3>Issued Book List</h3>
-                                </center>
-                            </div> 
-                        </div>
-
-                        <div class="row">
-                            <div class="col">
-                                <hr />
+                                <center><h3>Issued Book List</h3></center>
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col"><hr /></div>
+                        </div>
+
+                        <!-- Export to CSV Button -->
+                        <div class="row mb-3">
+                            <div class="col text-right">
+                                <asp:Button ID="btnExport" runat="server" Text="📁 Export to CSV" CssClass="btn btn-warning btn-sm" OnClick="btnExport_Click" />
+                            </div>
+                        </div>
+
+                        <!-- GridView -->
                         <div class="row">
                             <div class="col">
                                 <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:elibraryDBConnectionString %>" SelectCommand="SELECT * FROM [book_issue_tbl]"></asp:SqlDataSource>
@@ -141,15 +133,11 @@
                                     </Columns>
                                 </asp:GridView>
                             </div>
-                        </div> 
+                        </div>
 
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     </div>
-
 </asp:Content>

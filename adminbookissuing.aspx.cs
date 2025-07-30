@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -323,5 +325,56 @@ namespace ElibraryManagementSystem
                 Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
             }
         }
+
+        protected void btnExport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (SqlConnection con = new SqlConnection(conStr))
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM book_issue_tbl", con);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+
+                // Check if table is empty
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    Response.Write("<script>alert('No issued books found. Nothing to export.');</script>");
+                    return;
+                }
+
+                // Convert to CSV
+                StringBuilder sb = new StringBuilder();
+
+                // Column headers
+                string[] columnNames = dt.Columns.Cast<DataColumn>().Select(column => column.ColumnName).ToArray();
+                sb.AppendLine(string.Join(",", columnNames));
+
+                // Rows
+                foreach (DataRow row in dt.Rows)
+                {
+                    string[] fields = row.ItemArray.Select(field => field.ToString().Replace(",", " ")).ToArray();
+                    sb.AppendLine(string.Join(",", fields));
+                }
+
+                // Send CSV file
+                Response.Clear();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment;filename=BookIssueExport.csv");
+                Response.Charset = "";
+                Response.ContentType = "application/text";
+                Response.Output.Write(sb.ToString());
+                Response.Flush();
+                Response.End();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error exporting: " + ex.Message + "');</script>");
+            }
+        }
+
     }
 }
